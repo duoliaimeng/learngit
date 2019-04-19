@@ -1,0 +1,25 @@
+linux问题汇总---如何生成密钥对 
+
+准备：2台机器，ip分别为：192.168.0.195     192.168.1.210
+目的：通过195ssh远程访问210.无需输入密码
+1、首先在195上生成密钥对。
+#cd /root/.ssh
+#ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa): （直接回车）
+Enter passphrase (empty for no passphrase): （直接回车）
+Enter same passphrase again: （直接回车）
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+06:96:6b:56:0c:33:a4:24:16:8c:06:35:9b:98:8b:e7 root@localhost.localdomain
+2、在root/.ssh目录下生成密钥对 id_rsa和id_rsa.pub
+其中id_rsa是私钥，id_rsa.pub是公钥。
+3、将公钥直接copy到210的/root/.ssh目录下
+#scp id_rsa.pub root@192.168.1.210:/root/.ssh
+4、将210机器上的id_rsa.pub改名为authorized_keys
+#cd /root/.ssh
+#mv id_rsa.pub authorized_keys
+5、密钥设置成功。195ssh访问210无需密码成功
+#ssh 192.168.1.210
+成功啦
